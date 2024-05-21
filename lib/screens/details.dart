@@ -114,7 +114,7 @@ class Details extends StatelessWidget {
                       'Favorito',
                       style: TextStyle(color: primaryColor),
                     ),
-                    // Favorite(),
+                    Favorite(),
                   ],
                 )
               ],

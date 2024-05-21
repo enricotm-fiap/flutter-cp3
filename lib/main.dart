@@ -138,7 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void updateVariables(screen) {
     switch (screen) {
       case 1:
-        title = 'Todos os filmes';
+        title = 'Filmes';
         movies = all;
         break;
       case 2:
@@ -172,7 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             ListTile(
-              title: Text('Todos os Filmes'),
+              title: Text('Filmes'),
               onTap: () {
                 setState(() {
                   screen = 1;
