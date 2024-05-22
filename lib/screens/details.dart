@@ -1,18 +1,38 @@
-import 'package:checkpoint3/components/favorite.dart';
 import 'package:checkpoint3/components/movie.dart';
-import 'package:checkpoint3/components/stars.dart';
 import 'package:flutter/material.dart';
 
 class Details extends StatelessWidget {
-  Details({super.key, required this.movie, required this.primaryColor});
+  Details(
+      {super.key,
+      required this.movie,
+      required this.primaryColor,
+      required this.headerTextColor});
 
   Movie movie;
   Color primaryColor;
+  Color headerTextColor;
+
+  Icon getIcon(iconScore, score) {
+    IconData icon;
+    if (score > iconScore + 0.5) {
+      icon = Icons.star;
+    } else if (score > iconScore) {
+      icon = Icons.star_half;
+    } else {
+      icon = Icons.star_border;
+    }
+    return Icon(
+      icon,
+      color: Colors.amber,
+      size: 29,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: headerTextColor,
         title: Text(
           movie.title,
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -99,14 +119,19 @@ class Details extends StatelessWidget {
                       'Nota',
                       style: TextStyle(color: primaryColor),
                     ),
-                    // Stars(
-                    //   size: 12,
-                    //   score: movie.score,
-                    // ),
+                    Row(
+                      children: [
+                        getIcon(0, movie.score),
+                        getIcon(1, movie.score),
+                        getIcon(2, movie.score),
+                        getIcon(3, movie.score),
+                        getIcon(4, movie.score),
+                      ],
+                    )
                   ],
                 ),
                 SizedBox(
-                  width: 120,
+                  width: 60,
                 ),
                 Column(
                   children: [
@@ -114,7 +139,11 @@ class Details extends StatelessWidget {
                       'Favorito',
                       style: TextStyle(color: primaryColor),
                     ),
-                    Favorite(),
+                    Icon(
+                      movie.favorite ? Icons.favorite : Icons.favorite_border,
+                      color: Colors.red,
+                      size: 25,
+                    ),
                   ],
                 )
               ],

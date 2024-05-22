@@ -8,9 +8,19 @@ class Movie {
   bool favorite = false;
   double score = 0;
 
-  String getSubtitle(){
+  String getSubtitle() {
     return '$year - $genre - $screentime';
   }
 
-  Movie({required this.title, required this.year, required this.genre, required this.screentime, required this.synopsis, required this.image});
+  String getScore() {
+    return score == 0 ? '-' : score.toString();
+  }
+
+  Movie(
+      {required this.title,
+      required this.year,
+      required this.genre,
+      required this.screentime,
+      required this.synopsis,
+      required this.image});
 }

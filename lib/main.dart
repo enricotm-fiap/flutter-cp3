@@ -33,8 +33,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final primaryColor = Colors.cyan;
+  final primaryColor = Colors.purple;
   final secondaryColor = Colors.white;
+  final headerTextColor = Colors.white;
 
   int screen = 1; // 1 - Todos ; 2 - Favoritos ; 3 - Avaliados
   List<Movie> all = [
@@ -168,6 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
+                  color: headerTextColor,
                 ),
               ),
             ),
@@ -192,7 +194,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
-              title: Text('Assistidos'),
+              title: Text('Avaliados'),
               onTap: () {
                 setState(() {
                   screen = 3;
@@ -205,6 +207,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       appBar: AppBar(
+        foregroundColor: headerTextColor,
         title: Text(
           title,
           style: TextStyle(
@@ -227,13 +230,44 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  movies[i].score.toString(),
+                  movies[i].getScore(),
                   style: TextStyle(
                     fontSize: 16,
+                    color: Colors.amber,
+                  ),
+                ),
+                ShaderMask(
+                  blendMode: BlendMode.srcATop,
+                  shaderCallback: (Rect rect) {
+                    return LinearGradient(
+                      stops: [
+                        0.24,
+                        movies[i].score / 10 + 0.24,
+                        movies[i].score / 10 + 0.24,
+                      ],
+                      colors: [
+                        Colors.amber,
+                        Colors.amber,
+                        Colors.amber.withOpacity(0)
+                      ],
+                    ).createShader(rect);
+                  },
+                  child: IconButton(
+                    icon: Icon(Icons.star, size: 28, color: Colors.grey[300]),
+                    onPressed: () {
+                      setState(() {
+                        movies[i].score = (movies[i].score + 0.5) % 5.5;
+                        if (movies[i].score == 0.5) {
+                          scored.add(movies[i]);
+                        } else if (movies[i].score == 0) {
+                          scored.remove(movies[i]);
+                        }
+                      });
+                    },
                   ),
                 ),
                 SizedBox(
-                  width: 10,
+                  width: 5,
                 ),
                 IconButton(
                   icon: Icon(
@@ -256,8 +290,11 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      Details(movie: movies[i], primaryColor: primaryColor)));
+                  builder: (context) => Details(
+                        movie: movies[i],
+                        primaryColor: primaryColor,
+                        headerTextColor: headerTextColor,
+                      )));
             },
           );
         },
